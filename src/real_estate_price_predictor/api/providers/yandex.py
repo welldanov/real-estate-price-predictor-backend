@@ -2,7 +2,7 @@ from typing import Any
 
 import httpx
 
-from ...config import YANDEX_API_KEY
+from ...config import YANDEX_GEOSUGGEST_API_KEY, YANDEX_GEOCODER_API_KEY
 
 
 class YandexAPIError(Exception):
@@ -16,7 +16,7 @@ class YandexGeocoder:
 
     def __init__(
             self,
-            api_key: str | None = YANDEX_API_KEY,
+            api_key: str | None = YANDEX_GEOCODER_API_KEY,
     ) -> None:
         self.api_key = api_key
 
@@ -74,10 +74,10 @@ class YandexGeocoder:
 
         return data
 
-    async def get_coordinates_by_uri(
+    async def get_address_by_uri(
             self,
             uri: str,
-    ) -> tuple[float, float]:
+    ) -> tuple[str, float, float]:
         data = await self.geocode_uri(uri)
 
         try:
@@ -99,13 +99,10 @@ class YandexGeocoder:
         geo_object = members[0]["GeoObject"]
 
         try:
-            position = (
-                geo_object["Point"]["pos"]
-            )
+            position = geo_object["Point"]["pos"]
         except KeyError as exc:
             raise YandexAPIError(
-                "Coordinates are missing "
-                "in Yandex response."
+                "Coordinates are missing in Yandex response."
             ) from exc
 
         try:
@@ -115,11 +112,28 @@ class YandexGeocoder:
             )
         except (TypeError, ValueError) as exc:
             raise YandexAPIError(
-                "Invalid coordinates "
+                "Invalid coordinates in Yandex response."
+            ) from exc
+
+        try:
+            formatted_address = (
+                geo_object[
+                    "metaDataProperty"
+                ][
+                    "GeocoderMetaData"
+                ][
+                    "Address"
+                ][
+                    "formatted"
+                ]
+            )
+        except KeyError as exc:
+            raise YandexAPIError(
+                "Formatted address is missing "
                 "in Yandex response."
             ) from exc
 
-        return lat, lon
+        return formatted_address, lat, lon
 
 
 class YandexSuggest:
@@ -129,7 +143,7 @@ class YandexSuggest:
 
     def __init__(
             self,
-            api_key: str | None = YANDEX_API_KEY,
+            api_key: str | None = YANDEX_GEOSUGGEST_API_KEY,
     ) -> None:
         self.api_key = api_key
 
@@ -149,7 +163,7 @@ class YandexSuggest:
         params = {
             "apikey": self.api_key,
             "text": text,
-            "lang": "ru_RU",
+            "lang": "ru",
 
             # Только географические объекты.
             "types": "geo",
@@ -170,7 +184,7 @@ class YandexSuggest:
             "spn": "0.3,0.2",
 
             # Не позволяем выдаче уходить за окно.
-            "strict_bounds": "1",
+            # "strict_bounds": "1",
 
             # Только Россия.
             "countries": "ru",

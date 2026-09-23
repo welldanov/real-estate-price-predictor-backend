@@ -2,6 +2,7 @@ from ...api.providers.yandex import (
     YandexGeocoder,
 )
 from ...config import CityConfig
+
 from ...ml.predictor import RealEstatePredictor
 from ...utils.geo import calculate_distance_km
 from ..schemas.prediction import (
@@ -25,9 +26,9 @@ class PredictionService:
             request,
             city: CityConfig,
     ) -> dict:
-        lat, lon = (
+        formatted_address, lat, lon = (
             await self.geocoder
-            .get_coordinates_by_uri(
+            .get_address_by_uri(
                 request.address.uri,
             )
         )
@@ -118,10 +119,7 @@ class PredictionService:
                 predicted_price,
 
             "address": {
-                "formatted_address": (
-                    request.address
-                    .formatted_address
-                ),
+                "formatted_address": formatted_address,
                 "lat": lat,
                 "lon": lon,
                 "distance_to_center_km": (

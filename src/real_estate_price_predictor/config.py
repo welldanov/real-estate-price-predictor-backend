@@ -15,8 +15,12 @@ BASE_URL = "https://www.avito.ru"
 
 load_dotenv(ROOT_DIR / ".env")
 
-YANDEX_API_KEY = os.getenv(
-    "YANDEX_API_KEY"
+YANDEX_GEOSUGGEST_API_KEY = os.getenv(
+    "YANDEX_GEOSUGGEST_API_KEY"
+)
+
+YANDEX_GEOCODER_API_KEY = os.getenv(
+    "YANDEX_GEOCODER_API_KEY"
 )
 
 

@@ -4,7 +4,7 @@ from ...config import CITIES
 from ..schemas.city import CityResponse
 
 router = APIRouter(
-    prefix="/cities",
+    prefix="/api/cities",
     tags=["cities"],
 )
 

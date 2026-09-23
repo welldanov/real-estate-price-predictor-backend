@@ -17,7 +17,7 @@ from ..providers.yandex import (
 )
 
 router = APIRouter(
-    prefix="/addresses",
+    prefix="/api/addresses",
     tags=["addresses"],
 )
 

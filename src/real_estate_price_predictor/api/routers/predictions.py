@@ -17,7 +17,7 @@ from ..services.prediction_service import (
 )
 
 router = APIRouter(
-    prefix="/predict",
+    prefix="/api/predict",
     tags=["prediction"],
 )
 

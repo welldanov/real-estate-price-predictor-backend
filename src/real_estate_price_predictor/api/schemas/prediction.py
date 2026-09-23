@@ -9,11 +9,6 @@ class AddressSelection(BaseModel):
         max_length=2000,
     )
 
-    formatted_address: str = Field(
-        min_length=1,
-        max_length=500,
-    )
-
 
 class BasePredictionRequest(BaseModel):
     city_id: int = Field(

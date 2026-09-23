@@ -19,17 +19,9 @@ class RealEstatePredictor:
     ) -> None:
         self.models_dir = Path(models_dir)
 
-        self.apartment_model = self._load_model(
-            "apartment_price.cbm"
-        )
-
-        self.house_model = self._load_model(
-            "house_price.cbm"
-        )
-
-        self.land_model = self._load_model(
-            "land_price.cbm"
-        )
+        self.apartment_model = self._load_model("apartment_price.cbm")
+        self.house_model = self._load_model("house_price.cbm")
+        self.land_model = self._load_model("land_price.cbm")
 
     def _load_model(
             self,

@@ -8,14 +8,14 @@ def main() -> None:
 
     price = predictor.predict_apartment(
         city_name="Альметьевск",
-        lat=54.901,
-        lon=52.315,
-        distance_to_center_km=2.1,
-        area_m2=65,
-        rooms=2,
+        lat=54.890438,
+        lon=52.268565,
+        distance_to_center_km=2.3,
+        area_m2=42,
+        rooms=1,
         is_studio=0,
-        floor=5,
-        floors_total=10,
+        floor=8,
+        floors_total=18,
     )
 
     print()
